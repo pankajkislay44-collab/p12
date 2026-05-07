@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Works — PANKAJ Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neutral: {
+                            50: '#FBFBF9',
+                            100: '#F5F5F0',
+                            200: '#EBEBE6',
+                            300: '#D6D6D0',
+                            900: '#111111',
+                        },
+                        beige: '#F5F5F0',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Instrument Serif"', 'serif'],
+                    },
+                    aspectRatio: {
+                        '16/9': '16 / 9',
+                        '1/1': '1 / 1',
+                        '4/5': '4 / 5',
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * { cursor: none; }
+        body {
+            background-color: #F5F5F0;
+            color: #111111;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .grain {
+            position: fixed; top: 0; left: 0; height: 100%; width: 100%;
+            z-index: 999; pointer-events: none; opacity: 0.04;
+            background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+        }
+
+        /* Project Detail Modal */
+        #project-modal {
+            position: fixed;
+            inset: 0;
+            background: #F5F5F0;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+        #project-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            padding: 10rem 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .modal-close {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            z-index: 1001;
+        }
+
+        .cursor { width: 8px; height: 8px; background: #111111; border-radius: 50%; position: fixed; pointer-events: none; z-index: 1000; transition: transform 0.1s ease; }
+        .cursor-follower { width: 40px; height: 40px; border: 1px solid rgba(17, 17, 17, 0.2); border-radius: 50%; position: fixed; pointer-events: none; z-index: 999; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        .section-padding { padding: 8rem 1.5rem; }
+        @media (min-width: 768px) { .section-padding { padding: 10rem 3rem; } }
+
+        .img-container { overflow: hidden; position: relative; background: #EBEBE6; border-radius: 1.5rem; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); scale: 1.05; }
+        .img-container:hover img { transform: scale(1); }
+
+        .nav-link { position: relative; overflow: hidden; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: currentColor; transform: translateX(-101%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .nav-link:hover::after { transform: translateX(0); }
+
+        section { opacity: 0; transform: translateY(50px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        section.visible { opacity: 1; transform: translateY(0); }
+
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="font-sans selection:bg-neutral-900 selection:text-white">
+    <div class="grain"></div>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Project Detail Modal -->
+    <div id="project-modal">
+        <button onclick="closeProject()" class="modal-close text-[10px] font-bold uppercase tracking-[0.4em] bg-neutral-900 text-white px-8 py-4 rounded-full hover:scale-105 transition-transform">Close Project</button>
+        <div class="modal-content">
+            <div id="modal-body" class="space-y-20">
+                <!-- Content injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-[100] px-6 md:px-12 py-10 flex justify-between items-center text-neutral-900">
+        <a href="index.html" class="text-2xl font-extrabold tracking-tighter hover:opacity-50 transition-opacity">PANKAJ.</a>
+        <div class="hidden md:flex gap-12 text-[10px] font-black uppercase tracking-[0.2em]">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="Resume(Pankaj.k)%20.pdf" target="_blank" class="flex items-center gap-2 group">
+                <span class="nav-link">Resume</span>
+                <span class="w-1.5 h-1.5 bg-neutral-900 rounded-full group-hover:scale-125 transition-transform"></span>
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Page Header -->
+        <header class="section-padding px-6 md:px-12 pt-40 pb-20">
+            <div class="max-w-[1600px] mx-auto">
+                <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-900/30">Showcase</span>
+                <h1 class="text-7xl md:text-9xl font-extrabold uppercase tracking-tighter mt-8 mb-12">All Works</h1>
+                <div class="flex flex-wrap gap-4 mt-12">
+                    <button onclick="renderProjects('all')" class="category-btn-page px-8 py-3 rounded-full border border-neutral-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all">All</button>
+                    <button onclick="renderProjects('branding')" class="category-btn-page px-8 py-3 rounded-full border border-neutral-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all">Branding</button>
+                    <button onclick="renderProjects('magazine-book')" class="category-btn-page px-8 py-3 rounded-full border border-neutral-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all">Magazine & Book</button>
+                    <button onclick="renderProjects('package-design')" class="category-btn-page px-8 py-3 rounded-full border border-neutral-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all">Packaging</button>
+                    <button onclick="renderProjects('illustration')" class="category-btn-page px-8 py-3 rounded-full border border-neutral-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all">Illustration</button>
+                    <button onclick="renderProjects('social-media')" class="category-btn-page px-8 py-3 rounded-full border border-neutral-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all">Social Media</button>
+                    <button onclick="renderProjects('edits')" class="category-btn-page px-8 py-3 rounded-full border border-neutral-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all">Edits</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- All Works Grid -->
+        <section id="work-page" class="px-6 md:px-12 pb-40">
+            <div class="max-w-[1600px] mx-auto">
+                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-32 lg:gap-x-24">
+                    <!-- Projects injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="px-6 md:px-12 py-20 bg-neutral-900 text-white border-t border-white/10">
+        <div class="max-w-[1600px] mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-20 mb-32">
+                <div class="col-span-1 md:col-span-2">
+                    <a href="index.html" class="text-4xl font-extrabold tracking-tighter uppercase mb-8 block">Pankaj.</a>
+                    <p class="text-sm text-white/40 font-bold uppercase tracking-[0.3em] max-w-xs leading-relaxed">
+                        Independent Graphic Designer specializing in visual identities and digital experiences.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-[10px] font-bold uppercase tracking-[0.5em] text-white/30 mb-8">Social</h5>
+                    <ul class="space-y-4 text-sm font-bold uppercase tracking-widest">
+                        <li><a href="https://www.instagram.com/tonightgamer2_0?igsh=Y3JwOXE3Y3JxY2hm" target="_blank" class="hover:text-white/40 transition-colors">Instagram</a></li>
+                        <li><a href="https://www.linkedin.com/in/pankaj-kumar-graphic/" target="_blank" class="hover:text-white/40 transition-colors">LinkedIn</a></li>
+                        <li><a href="https://github.com/" target="_blank" class="hover:text-white/40 transition-colors">GitHub</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-[10px] font-bold uppercase tracking-[0.5em] text-white/30 mb-8">Contact</h5>
+                    <ul class="space-y-4 text-sm font-bold uppercase tracking-widest">
+                        <li><a href="mailto:kumarpankaj80838@gmail.com" class="hover:text-white/40 transition-colors">kumarpankaj80838@gmail.com</a></li>
+                        <li><a href="tel:+919016550933" class="hover:text-white/40 transition-colors">+91 901 655 0933</a></li>
+                        <li class="text-white/40">Vadodara, Gujarat, India</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-white/10 gap-8">
+                <p class="text-[8px] font-bold uppercase tracking-[0.5em] text-white/30">© 2024 Pankaj Studio. All Rights Reserved.</p>
+                <div class="flex gap-12">
+                    <a href="#" class="text-[8px] font-bold uppercase tracking-[0.5em] text-white/30 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-[8px] font-bold uppercase tracking-[0.5em] text-white/30 hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const projects = [
+            { 
+                id: 1, 
+                title: "Luxe Lift Serum", 
+                type: "Package Design • Luxury", 
+                year: "2024", 
+                category: "package-design", 
+                image: "assets/work/package-design/1.jpg", 
+                ratio: "16/9",
+                relatedImages: [
+                    "assets/work/package-design/1_detail_1.jpg",
+                    "assets/work/package-design/1_detail_2.jpg",
+                    "assets/work/package-design/1_detail_3.jpg"
+                ]
+            },
+            { 
+                id: 2, 
+                title: "Street & Urban Photography", 
+                type: "Photography • Art Direction", 
+                year: "2023", 
+                category: "photography", 
+                image: "assets/work/photography/1.jpg", 
+                ratio: "16/9",
+                relatedImages: [
+                    "assets/work/photography/1_detail_1.jpg",
+                    "assets/work/photography/1_detail_2.jpg",
+                    "assets/work/photography/1_detail_3.jpg"
+                ]
+            },
+            { 
+                id: 3, 
+                title: "Digital Vector Illustration", 
+                type: "Illustration • Digital Art", 
+                year: "2024", 
+                category: "illustration", 
+                image: "assets/work/illustration/1.jpg", 
+                ratio: "16/9",
+                relatedImages: [
+                    "assets/work/illustration/1_detail_1.jpg",
+                    "assets/work/illustration/1_detail_2.jpg",
+                    "assets/work/illustration/1_detail_3.jpg"
+                ]
+            },
+            { id: 4, title: "Urban Editorial", type: "Photography • Art Direction", year: "2023", category: "photography", image: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2070&auto=format&fit=crop", ratio: "16/9" },
+            { id: 5, title: "Modernist Poster Set", type: "Graphic Design • Typography", year: "2024", category: "graphic-design", image: "https://images.unsplash.com/photo-1572044162444-ad60f128bde7?q=80&w=2070&auto=format&fit=crop", ratio: "16/9" },
+            { 
+                id: 6, 
+                title: "Varanasi Magazine", 
+                type: "Magazine • Editorial", 
+                year: "2024", 
+                category: "magazine-book", 
+                image: "assets/work/magazine-book/01.jpg", 
+                ratio: "16/9",
+                flipbook: "https://heyzine.com/flip-book/38f96f3c94.html"
+            },
+            { 
+                id: 22, 
+                title: "CHOTA UDAIPUR BOOK", 
+                type: "Book • Layout", 
+                year: "2024", 
+                category: "magazine-book", 
+                image: "assets/work/magazine-book/2.jpg", 
+                ratio: "16/9",
+                flipbook: "https://heyzine.com/flip-book/5cfab17eb5.html"
+            },
+            { 
+                id: 7, 
+                title: "MB ZAVERI", 
+                type: "Branding • Identity", 
+                year: "2024", 
+                category: "branding", 
+                image: "assets/work/branding/1.jpg", 
+                ratio: "16/9",
+                relatedImages: [
+                    "assets/work/branding/1_detail_1.jpg",
+                    "assets/work/branding/1_detail_2.jpg",
+                    "assets/work/branding/1_detail_3.jpg",
+                    "assets/work/branding/1_detail_4.jpg",
+                    "assets/work/branding/1_detail_5.jpg"
+                ]
+            },
+            { 
+                id: 8, 
+                title: "JIDEN (FACIAL KIT)", 
+                type: "Package • Design", 
+                year: "2024", 
+                category: "package-design", 
+                image: "assets/work/package-design/8.jpg", 
+                ratio: "16/9",
+                relatedImages: [
+                    "assets/work/package-design/8_detail_1.jpg",
+                    "assets/work/package-design/8_detail_2.jpg"
+                ]
+            },
+            { 
+                id: 10, 
+                title: "GLASSKEM", 
+                type: "Branding • Concept", 
+                year: "2024", 
+                category: "branding", 
+                image: "assets/work/branding/10.jpg", 
+                ratio: "16/9",
+                relatedImages: [
+                    "assets/work/branding/10_detail_1.jpg",
+                    "assets/work/branding/10_detail_2.png",
+                    "assets/work/branding/10_detail_3.jpg",
+                    "assets/work/branding/10_detail_4.jpg",
+                    "assets/work/branding/10_detail_5.jpg"
+                ]
+            },
+
+            { id: 11, title: "Project Eleven", type: "Photography • Editorial", year: "2024", category: "photography", image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=2070&auto=format&fit=crop", ratio: "16/9" },
+            { id: 12, title: "Project Twelve", type: "Graphic • Visual", year: "2024", category: "graphic-design", image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2070&auto=format&fit=crop", ratio: "16/9" },
+            { id: 13, title: "Project Thirteen", type: "Logo • Design", year: "2024", category: "logo-design", image: "https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=2070&auto=format&fit=crop", ratio: "16/9" },
+            { id: 17, title: "Project Seventeen", type: "Photography • Art", year: "2024", category: "photography", image: "https://images.unsplash.com/photo-1493723843671-1d655e7d98f0?q=80&w=2070&auto=format&fit=crop", ratio: "16/9" },
+            { id: 18, title: "Project Eighteen", type: "Graphic • Identity", year: "2024", category: "graphic-design", image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1964&auto=format&fit=crop", ratio: "16/9" },
+            { id: 19, title: "Project Nineteen", type: "Logo • Concept", year: "2024", category: "logo-design", image: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?q=80&w=2070&auto=format&fit=crop", ratio: "16/9" },
+            { 
+                id: 23, 
+                title: "Social Media Campaign", 
+                type: "Social Media • Creative", 
+                year: "2024", 
+                category: "social-media", 
+                image: "assets/work/social-media/1.jpg", 
+                ratio: "1/1",
+                relatedImages: [
+                    "assets/work/social-media/1_detail_1.jpg",
+                    "assets/work/social-media/1_detail_2.jpg"
+                ]
+            },
+            { 
+                id: 26, 
+                title: "GAURI SAREE", 
+                type: "Edit • Retouching", 
+                year: "2024", 
+                category: "edits", 
+                image: "assets/work/edits/1.jpg", 
+                ratio: "16/9",
+                relatedImages: [
+                    "assets/work/edits/1_detail_1.jpg",
+                    "assets/work/edits/1_detail_2.jpg",
+                    "assets/work/edits/1_detail_3.jpg",
+                    "assets/work/edits/1_detail_4.jpg",
+                    "assets/work/edits/1_detail_5.jpg",
+                    "assets/work/edits/1_detail_6.jpg"
+                ]
+            },
+            { 
+                id: 27, 
+                title: "Krondrp", 
+                type: "Edit • Color Correction", 
+                year: "2024", 
+                category: "edits", 
+                image: "assets/work/edits/2.jpg", 
+                ratio: "16/9",
+                relatedImages: [
+                    "assets/work/edits/2_detail_1.jpg",
+                    "assets/work/edits/2_detail_2.jpg",
+                    "assets/work/edits/2_detail_3.jpg",
+                    "assets/work/edits/2_detail_4.jpg"
+                ]
+            },
+            { 
+                id: 30, 
+                title: "Chupa Chups", 
+                type: "Package • Design", 
+                year: "2024", 
+                category: "package-design", 
+                image: "assets/work/package-design/30.jpg", 
+                ratio: "16/9",
+                relatedImages: [
+                     "assets/work/package-design/30_detail_1.jpg",
+                     "assets/work/package-design/30_detail_2.jpg"
+                 ]
+             },
+            { 
+                 id: 31, 
+                 title: "PHILIPS BEARD TRIMMER", 
+                 type: "Package • Design", 
+                 year: "2024", 
+                 category: "package-design", 
+                 image: "assets/work/package-design/31.jpg", 
+                 ratio: "16/9",
+                 relatedImages: [
+                     "assets/work/package-design/31_detail_1.jpg",
+                     "assets/work/package-design/31_detail_2.jpg"
+                 ]
+             },
+            { 
+                id: 32, 
+                title: "EDITORIAL DESIGN", 
+                type: "Magazine • Editorial", 
+                year: "2024", 
+                category: "magazine-book", 
+                image: "assets/work/magazine-book/32.jpg", 
+                ratio: "16/9",
+                flipbook: "https://heyzine.com/flip-book/fe28a60b1e.html",
+                relatedImages: ["assets/work/magazine-book/32_detail_1.jpg"]
+            },
+            { 
+                id: 33, 
+                title: "Domino's Pizza Illustration", 
+                type: "Illustration • Art", 
+                year: "2024", 
+                category: "illustration", 
+                image: "assets/work/illustration/33.jpg", 
+                ratio: "16/9",
+                relatedImages: [
+                    "assets/work/illustration/33_detail_1.jpg",
+                    "assets/work/illustration/33_detail_2.jpg"
+                ]
+            },
+            { 
+                id: 34, 
+                title: "Movie poster", 
+                type: "Branding • Identity", 
+                year: "2024", 
+                category: "branding", 
+                image: "assets/work/branding/34.jpg", 
+                ratio: "16/9",
+                relatedImages: ["assets/work/branding/34_detail_1.jpg"]
+            }
+        ];
+
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+            follower.style.transform = `translate3d(${e.clientX - 16}px, ${e.clientY - 16}px, 0)`;
+        });
+
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform += ' scale(4)';
+                cursor.style.background = 'rgba(17,17,17,0.1)';
+                follower.style.transform += ' scale(1.5)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = cursor.style.transform.replace(' scale(4)', '');
+                cursor.style.background = '#111111';
+                follower.style.transform = follower.style.transform.replace(' scale(1.5)', '');
+            });
+        });
+
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+
+        function renderProjects(filter = 'all') {
+            const grid = document.getElementById('project-grid');
+            const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+            
+            grid.innerHTML = filtered.map(p => `
+                <div class="group cursor-pointer project-item col-span-1 md:col-span-2" data-category="${p.category}" onclick="openProject(${p.id})">
+                    <div class="img-container aspect-16/9 mb-8 shadow-lg">
+                        <img src="${p.image}" alt="${p.title}" class="project-img" onerror="this.src='assets/work/${p.category}/${p.id}.jpg'">
+                        <div class="absolute inset-0 bg-neutral-900/10 group-hover:bg-transparent transition-colors duration-700"></div>
+                    </div>
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-2">
+                        <h4 class="text-xl md:text-2xl font-extrabold uppercase tracking-tight">${p.title}</h4>
+                        <p class="text-[8px] font-bold uppercase tracking-[0.3em] text-neutral-900/30">${p.type} • ${p.year}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.project-item').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        }
+
+        // Project Modal Logic
+        function openProject(id) {
+            const project = projects.find(p => p.id === id);
+            if (!project) return;
+
+            const modal = document.getElementById('project-modal');
+            const body = document.getElementById('modal-body');
+
+            if (project.category === 'magazine-book' && project.flipbook) {
+                body.innerHTML = `
+                    <div class="mb-12">
+                        <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-900/30">${project.type}</span>
+                        <h2 class="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter mt-4">${project.title}</h2>
+                        <p class="mt-8 text-sm uppercase tracking-widest text-neutral-900/40">Interactive Flipbook Viewer</p>
+                    </div>
+                    <div class="w-full aspect-[3/4] md:aspect-[16/10] bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-neutral-200">
+                        <iframe src="${project.flipbook}" class="w-full h-full" frameborder="0" allowfullscreen allow="clipboard-write"></iframe>
+                    </div>
+                    <div class="mt-12 text-center">
+                        <a href="${project.flipbook}" target="_blank" class="text-[10px] font-bold uppercase tracking-widest border border-neutral-900 px-8 py-4 rounded-full hover:bg-neutral-900 hover:text-white transition-all">Open Full Experience</a>
+                    </div>
+                `;
+            } else if (project.category === 'magazine-book' && project.pdf) {
+                body.innerHTML = `
+                    <div class="mb-12">
+                        <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-900/30">${project.type}</span>
+                        <h2 class="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter mt-4">${project.title}</h2>
+                        <p class="mt-8 text-sm uppercase tracking-widest text-neutral-900/40">Interactive Magazine Viewer</p>
+                    </div>
+                    <div class="w-full aspect-[3/4] md:aspect-[16/10] bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-neutral-200">
+                        <iframe src="${project.pdf}#toolbar=0" class="w-full h-full" frameborder="0"></iframe>
+                    </div>
+                    <div class="mt-12 text-center">
+                        <a href="${project.pdf}" target="_blank" class="text-[10px] font-bold uppercase tracking-widest border border-neutral-900 px-8 py-4 rounded-full hover:bg-neutral-900 hover:text-white transition-all">Open Full PDF</a>
+                    </div>
+                `;
+            } else if (project.relatedImages) {
+                body.innerHTML = `
+                    <div class="mb-20">
+                        <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-900/30">${project.type}</span>
+                        <h2 class="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter mt-4">${project.title}</h2>
+                    </div>
+                    <div class="grid grid-cols-1 gap-12">
+                        ${project.relatedImages.map(img => `
+                            <div class="img-container aspect-16/9 shadow-2xl">
+                                <img src="${img}" alt="${project.title} Detail" class="w-full h-full object-cover">
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                body.innerHTML = `
+                    <div class="mb-20">
+                        <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-900/30">${project.type}</span>
+                        <h2 class="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter mt-4">${project.title}</h2>
+                    </div>
+                    <div class="img-container aspect-16/9 shadow-2xl">
+                        <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover">
+                    </div>
+                `;
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProject() {
+            const modal = document.getElementById('project-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        renderProjects();
+    </script>
+</body>
+</html>
